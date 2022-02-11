@@ -16,7 +16,7 @@ public class ProductController {
     private ProductServiceImplementation productServiceImplementation;
 
     @GetMapping("/products")
-    public List<ProductCompanyDto> getAllProducts() {
+    public List<Product> getAllProducts() {
         return productServiceImplementation.getAllProducts();
     }
 
@@ -31,26 +31,31 @@ public class ProductController {
         return productServiceImplementation.getProductByName(name);
     }
 
+    @GetMapping("/productss/{companyId}")
+    public List<Product> getProductsById(@PathVariable int companyId){
+        return productServiceImplementation.getProductsByCompany_Id(companyId);
+    }
+
     @PostMapping("/products")
     public  Product addNewProduct(@RequestBody ProductCompanyDto productCompanyDto){
 
        return productServiceImplementation.addProduct(productCompanyDto);
     }
 
-//    @PutMapping("/products/{id}")
-//    public void updateProduct(@PathVariable int id, @RequestBody Product product){
-//        productServiceImplementation.updateProduct(id,product);
-//    }
-//
-//    @DeleteMapping("/products/{id}")
-//    public void deleteProduct(@PathVariable int id){
-//        productServiceImplementation.deleteProductById(id);
-//    }
-//
-//@DeleteMapping("/products")
-//    public void deleteAllProduct(){
-//        productServiceImplementation.deleteAllProducts();
-//}
+    @PutMapping("/products/{id}")
+    public void updateProduct(@PathVariable int id, @RequestBody Product product){
+        productServiceImplementation.updateProduct(id,product);
+    }
+
+    @DeleteMapping("/products/{id}")
+    public void deleteProduct(@PathVariable int id){
+        productServiceImplementation.deleteProductById(id);
+    }
+
+@DeleteMapping("/products")
+    public void deleteAllProduct(){
+        productServiceImplementation.deleteAllProducts();
+}
 
 
 }

@@ -18,22 +18,13 @@ public class ProductServiceImplementation implements ProductService {
     @Autowired
     private CompanyServiceImplementation companyServiceImplementation;
 
-    public List<ProductCompanyDto> getAllProducts() {
-        return productRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
-
-    }
-    private ProductCompanyDto convertToDto(Product product) {
-        ProductCompanyDto dto = new ProductCompanyDto();
-
-
-        dto.setName(product.getName());
-        dto.setPrice(product.getPrice());
-        dto.setCompanyId(product.getCompany().getId());
-
-        return dto;
-
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
+    public List<Product>  getProductsByCompany_Id(int id){
+      return  productRepository.getProductsByCompany_Id(id);
+    }
 
 
     public Product getProductByName(String name) {
@@ -72,7 +63,7 @@ public class ProductServiceImplementation implements ProductService {
 
     }
 
-    @Override
+
     public void deleteAllProducts() {
         productRepository.deleteAll();
     }
