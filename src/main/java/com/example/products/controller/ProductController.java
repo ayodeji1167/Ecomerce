@@ -15,47 +15,55 @@ public class ProductController {
     @Autowired
     private ProductServiceImplementation productServiceImplementation;
 
+
+    //Get all products
     @GetMapping("/products")
     public List<Product> getAllProducts() {
         return productServiceImplementation.getAllProducts();
     }
 
-
+    //Get products by ID
     @GetMapping("/products/{id}")
     public Product getProductById(@PathVariable int id) {
         return productServiceImplementation.getProductById(id);
     }
 
+    //Get products by name
     @GetMapping("/products/{name}")
     public Product getProductByName(@PathVariable String name) {
         return productServiceImplementation.getProductByName(name);
     }
 
+    //Get products by company ID
     @GetMapping("/productss/{companyId}")
-    public List<Product> getProductsById(@PathVariable int companyId){
+    public List<Product> getProductsById(@PathVariable int companyId) {
         return productServiceImplementation.getProductsByCompany_Id(companyId);
     }
 
+    //Add new Product
     @PostMapping("/products")
-    public  Product addNewProduct(@RequestBody ProductCompanyDto productCompanyDto){
+    public Product addNewProduct(@RequestBody ProductCompanyDto productCompanyDto) {
 
-       return productServiceImplementation.addProduct(productCompanyDto);
+        return productServiceImplementation.addProduct(productCompanyDto);
     }
 
+    //Update Product
     @PutMapping("/products/{id}")
-    public void updateProduct(@PathVariable int id, @RequestBody Product product){
-        productServiceImplementation.updateProduct(id,product);
+    public void updateProduct(@PathVariable int id, @RequestBody Product product) {
+        productServiceImplementation.updateProduct(id, product);
     }
 
+    //Delete a Product by Id
     @DeleteMapping("/products/{id}")
-    public void deleteProduct(@PathVariable int id){
+    public void deleteProduct(@PathVariable int id) {
         productServiceImplementation.deleteProductById(id);
     }
 
-@DeleteMapping("/products")
-    public void deleteAllProduct(){
+    //Delete All products
+    @DeleteMapping("/products")
+    public void deleteAllProduct() {
         productServiceImplementation.deleteAllProducts();
-}
+    }
 
 
 }

@@ -2,6 +2,7 @@ package com.example.products.service;
 
 import com.example.products.data.Product;
 import com.example.products.dto.ProductCompanyDto;
+import com.example.products.exception.NameAlreadyExistException;
 import com.example.products.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,10 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     public Product addProduct(ProductCompanyDto productCompanyDto) {
-
+        for (Product p : productRepository.findAll()){
+            if (p.getName().equals(productCompanyDto.getName()))
+                throw new NameAlreadyExistException("Product with this name already exist!");
+        }
         return productRepository.save(converterToEntity(productCompanyDto));
 
     }
