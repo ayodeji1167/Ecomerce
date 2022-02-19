@@ -9,7 +9,9 @@ public interface CompanyService {
 
     List<Company> getAllCompanies();
 
-    Company getCompanyById(int id);
+    Optional<Company> getCompanyById(int id);
+
+    Company companyById(int id);
 
     void updateCompany(int id, Company company );
 

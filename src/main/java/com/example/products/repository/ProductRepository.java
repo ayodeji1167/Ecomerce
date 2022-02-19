@@ -6,13 +6,18 @@ import org.springframework.stereotype.Repository;
 
 import javax.print.attribute.standard.PDLOverrideSupported;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product>  getProductsByCompany_Id(int id);
 
-    Product getProductByName(String name);
+   Optional<Product>  getProductByName(String name);
+
+
+
+
 
 
 
