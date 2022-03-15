@@ -1,9 +1,8 @@
 package com.example.products.serviceimplementation;
 
-import com.example.products.data.Category;
-import com.example.products.data.Company;
-import com.example.products.data.Product;
-import com.example.products.dto.ProductCompanyDto;
+import com.example.products.entity.Company;
+import com.example.products.entity.Product;
+import com.example.products.dto.ProductDto;
 import com.example.products.exception.CompanyNotFoundException;
 import com.example.products.exception.NameAlreadyExistException;
 import com.example.products.exception.ProductNotFoundException;
@@ -29,7 +28,7 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     //Get all products by company id
-    public List<Product> getProductsByCompany_Id(int id) {
+    public List<Product> getProductsByCompany_Id(long id) {
         return productRepository.getProductsByCompany_Id(id);
     }
 
@@ -42,7 +41,7 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     //Get product by id
-    public Optional<Product> getProductById(int id) {
+    public Optional<Product> getProductById(long id) {
         Optional<Product> product = productRepository.findById(id);
         product.orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " Is Not Found"));
         return product;
@@ -50,7 +49,7 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     //Add new product
-    public Product addProduct(ProductCompanyDto productCompanyDto) {
+    public Product addProduct(ProductDto productCompanyDto) {
         for (Product p : productRepository.findAll()) {
             if (p.getName().equals(productCompanyDto.getName()))
                 throw new NameAlreadyExistException("Product with this name already exist!");
@@ -59,7 +58,7 @@ public class ProductServiceImplementation implements ProductService {
 
     }
 
-    private Product converterToEntity(ProductCompanyDto productCompanyDto) {
+    private Product converterToEntity(ProductDto productCompanyDto) {
         Product product1 = new Product();
         Optional<Company> company = companyServiceImplementation.getCompanyById(productCompanyDto.getCompanyId());
 
@@ -77,7 +76,7 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     //Update Product
-    public Product updateProduct(int id, ProductCompanyDto productCompanyDto) {
+    public Product updateProduct(long id, ProductDto productCompanyDto) {
 
         Optional<Product> product1 = productRepository.findById(id);
         product1.orElseThrow((() -> new ProductNotFoundException("Product with id " + id + " Is Not Found")));
@@ -90,7 +89,7 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     //Delete Product
-    public void deleteProductById(int id) {
+    public void deleteProductById(long id) {
         productRepository.deleteById(id);
 
     }

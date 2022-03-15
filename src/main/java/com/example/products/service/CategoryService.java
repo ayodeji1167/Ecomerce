@@ -1,6 +1,6 @@
 package com.example.products.service;
 
-import com.example.products.data.Category;
+import com.example.products.entity.Category;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +11,10 @@ public interface CategoryService {
 
     public List<Category> getAllCategory();
 
-    public Optional<Category> getCategoryById(int id);
+    public Optional<Category> getCategoryById(long id);
 
-    public Category updateCategoryById(int id, Category category);
+    public Category updateCategoryById(long id, Category category);
 
-    public boolean isCategoryPresent(int id);
+    public boolean isCategoryPresent(long id);
 
 }

@@ -1,4 +1,4 @@
-package com.example.products.data;
+package com.example.products.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn
@@ -30,6 +30,9 @@ public class Product {
     private String name;
 
     private double price;
+
+    @ManyToOne
+    private Category category;
 
 
 

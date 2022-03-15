@@ -1,29 +1,62 @@
 package com.example.products.serviceimplementation;
 
-import com.example.products.data.User;
+import com.example.products.dto.UserDto;
+import com.example.products.entity.Role;
+import com.example.products.entity.User;
 import com.example.products.exception.UserNotFoundException;
 import com.example.products.repository.UserRepo;
 import com.example.products.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class UserServiceImplementation implements UserService {
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
+    private final PasswordEncoder passwordEncoder;
 
-    public User createUser(User user) {
+    public UserServiceImplementation(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
+    //CREATE A USER
+    @Override
+    public User createUser(UserDto userDto) {
+        User user = createNeutralUser(userDto);
+        user.setRole(Role.USER);
         return userRepo.save(user);
     }
 
-    public Optional<User> findUserById(int id) {
-       Optional<User> user = userRepo.findById(id);
-       if (user.isEmpty()){
-           throw new UserNotFoundException("This user is not found");
-       }
+    //CREATE AN ADMIN
+    public User createAdmin(UserDto userDto) {
+        User admin = createNeutralUser(userDto);
+        admin.setRole(Role.ADMIN);
 
-       return user;
+        return userRepo.save(admin);
+    }
+
+    //METHOD FOR CREATING A NEUTRAL USER
+    private User createNeutralUser(UserDto userDto) {
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setEmail(userDto.getEmail());
+        user.setEnabled(true);
+        return user;
+    }
+
+
+    public Optional<User> findUserById(long id) {
+        Optional<User> user = userRepo.findById(id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("This user is not found");
+        }
+
+        return user;
     }
 }

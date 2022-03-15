@@ -1,9 +1,7 @@
 package com.example.products.service;
 
-import com.example.products.data.Product;
-import com.example.products.data.WishList;
-
-import java.util.List;
+import com.example.products.entity.Product;
+import com.example.products.entity.WishList;
 
 public interface WishListService {
 

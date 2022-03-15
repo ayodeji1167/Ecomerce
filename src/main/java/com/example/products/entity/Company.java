@@ -1,4 +1,4 @@
-package com.example.products.data;
+package com.example.products.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -14,11 +15,14 @@ import javax.persistence.*;
 @Entity
 public class Company {
     @Id
-    private int id;
+    private Long id;
 
     private String name;
 
     private String description;
+
+    @OneToMany
+    private Set<Product> products;
 
 
 

@@ -1,16 +1,14 @@
 package com.example.products.service;
 
-import com.example.products.data.User;
-import com.example.products.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.products.dto.UserDto;
+import com.example.products.entity.User;
 
 import java.util.Optional;
 
 
 public interface UserService {
 
-    User createUser(User user);
+    User createUser(UserDto userDto);
 
-    Optional<User> findUserById(int id);
+    Optional<User> findUserById(long id);
 }

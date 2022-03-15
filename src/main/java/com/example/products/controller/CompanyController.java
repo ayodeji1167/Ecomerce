@@ -1,6 +1,6 @@
 package com.example.products.controller;
 
-import com.example.products.data.Company;
+import com.example.products.entity.Company;
 import com.example.products.exception.CategoryNotFoundException;
 import com.example.products.serviceimplementation.CompanyServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;

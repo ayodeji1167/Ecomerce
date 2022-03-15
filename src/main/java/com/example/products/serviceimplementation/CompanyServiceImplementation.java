@@ -1,6 +1,6 @@
 package com.example.products.serviceimplementation;
 
-import com.example.products.data.Company;
+import com.example.products.entity.Company;
 import com.example.products.exception.CompanyNotFoundException;
 import com.example.products.repository.CompanyRepository;
 import com.example.products.service.CompanyService;
@@ -24,7 +24,7 @@ public class CompanyServiceImplementation implements CompanyService {
     }
 
     //Get Company By ID
-    public Optional<Company> getCompanyById(int id) {
+    public Optional<Company> getCompanyById(long id) {
         Optional<Company> company = companyRepository.findById(id);
         if (company.isPresent()) {
             return company;
@@ -33,12 +33,12 @@ public class CompanyServiceImplementation implements CompanyService {
     }
 
     //Get Normal Company By Id
-    public Company companyById(int id) {
+    public Company companyById(long id) {
         return companyRepository.getCompanyById(id);
     }
 
     //Update Company
-    public void updateCompany(int id, Company company) {
+    public void updateCompany(long id, Company company) {
     Optional<Company> company1 = companyRepository.findById(id);
     if (company1.isPresent()){
         companyRepository.save(company);
@@ -52,7 +52,7 @@ public class CompanyServiceImplementation implements CompanyService {
         companyRepository.save(company);
     }
 
-    public void deleteCompany(int id) {
+    public void deleteCompany(long id) {
         companyRepository.deleteById(id);
     }
 }

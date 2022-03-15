@@ -2,7 +2,7 @@ package com.example.products.dto;
 
 
 
-public class ProductCompanyDto   {
+public class ProductDto {
 
 
     private int companyId;

@@ -1,13 +1,10 @@
-package com.example.products.data;
+package com.example.products.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 @Data
 @AllArgsConstructor
@@ -15,11 +12,16 @@ import java.util.Date;
 @Entity
 public class WishList {
     @Id
-    private int id;
+    private Long id;
 
     private Date createdDate;
 
     @ManyToOne
     @JoinColumn
     private Product product;
+
+    @OneToOne
+    @JoinColumn
+    private User user;
+
 }

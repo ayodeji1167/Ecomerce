@@ -1,8 +1,7 @@
 package com.example.products.service;
 
-import com.example.products.data.Category;
-import com.example.products.data.Product;
-import com.example.products.dto.ProductCompanyDto;
+import com.example.products.entity.Product;
+import com.example.products.dto.ProductDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,17 +9,17 @@ import java.util.Optional;
 public interface ProductService {
     List<Product> getAllProducts();
 
-    List<Product> getProductsByCompany_Id(int id);
+    List<Product> getProductsByCompany_Id(long id);
 
     Optional<Product> getProductByName(String name);
 
-    Optional<Product> getProductById(int id);
+    Optional<Product> getProductById(long id);
 
-    Product addProduct(ProductCompanyDto productCompanyDto);
+    Product addProduct(ProductDto productCompanyDto);
 
-    Product updateProduct(int id, ProductCompanyDto productCompanyDto);
+    Product updateProduct(long id, ProductDto productCompanyDto);
 
-    void deleteProductById(int id);
+    void deleteProductById(long id);
 
 
 

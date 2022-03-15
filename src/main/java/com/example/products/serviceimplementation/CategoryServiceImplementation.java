@@ -1,6 +1,6 @@
 package com.example.products.serviceimplementation;
 
-import com.example.products.data.Category;
+import com.example.products.entity.Category;
 import com.example.products.exception.CategoryNotFoundException;
 import com.example.products.repository.CategoryRepository;
 import com.example.products.service.CategoryService;
@@ -27,7 +27,7 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     //Get category by id
-    public Optional<Category> getCategoryById(int id) {
+    public Optional<Category> getCategoryById(long id) {
        Optional<Category> category1 = categoryRepository.findById(id);
        if (category1.isPresent()){
            return category1;
@@ -38,7 +38,7 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     //Update Category by id
-    public Category updateCategoryById(int id, Category category) {
+    public Category updateCategoryById(long id, Category category) {
         Optional<Category> category1 = categoryRepository.findById(id);
         if (category1.isPresent()){
             return categoryRepository.save(category);
@@ -49,7 +49,7 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     //Return true if category is present
-    public boolean isCategoryPresent(int id) {
+    public boolean isCategoryPresent(long id) {
         return categoryRepository.findById(id).isPresent();
     }
 }

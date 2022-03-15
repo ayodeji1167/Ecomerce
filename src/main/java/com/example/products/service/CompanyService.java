@@ -1,6 +1,6 @@
 package com.example.products.service;
 
-import com.example.products.data.Company;
+import com.example.products.entity.Company;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,15 +9,15 @@ public interface CompanyService {
 
     List<Company> getAllCompanies();
 
-    Optional<Company> getCompanyById(int id);
+    Optional<Company> getCompanyById(long id);
 
-    Company companyById(int id);
+    Company companyById(long id);
 
-    void updateCompany(int id, Company company );
+    void updateCompany(long id, Company company );
 
     void addCompany(Company company);
 
-    void  deleteCompany(int id);
+    void  deleteCompany(long id);
 
 
 }

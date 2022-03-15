@@ -1,4 +1,4 @@
-package com.example.products.data;
+package com.example.products.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 
@@ -15,13 +16,16 @@ import javax.persistence.*;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String categoryName;
 
     @Column(nullable = false)
     private String description;
+
+    @OneToMany
+    private Set<Product> products;
 
 
 }
