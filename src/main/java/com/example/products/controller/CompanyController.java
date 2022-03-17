@@ -1,65 +1,64 @@
 package com.example.products.controller;
 
+import com.example.products.dto.responseDto.CompanyResponseDto;
 import com.example.products.entity.Company;
-import com.example.products.exception.CategoryNotFoundException;
 import com.example.products.serviceimplementation.CompanyServiceImplementation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 public class CompanyController {
 
-    @Autowired
-    private CompanyServiceImplementation companyServiceImplementation;
+    private final CompanyServiceImplementation companyServiceImplementation;
 
-    //Get all companies
+    public CompanyController(CompanyServiceImplementation companyServiceImplementation) {
+        this.companyServiceImplementation = companyServiceImplementation;
+    }
+
+    //ADD NEW COMPANY
+    @PostMapping("/companies")
+    public ResponseEntity<CompanyResponseDto> addNewCompany(@RequestBody Company company) {
+        CompanyResponseDto company1 = companyServiceImplementation.addCompany(company);
+        return new ResponseEntity<>(company1, HttpStatus.OK);
+    }
+
+
+    //GET ALL COMPANIES
     @GetMapping("/companies")
-    public ResponseEntity<List<Company>> getAllCompanies() {
-        List<Company> companies = companyServiceImplementation.getAllCompanies();
+    public ResponseEntity<List<CompanyResponseDto>> getAllCompanies() {
+        List<CompanyResponseDto> companies = companyServiceImplementation.getAllCompanies();
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
 
-    //Get Company By Company ID
+    //GET COMPANY BY ID
     @GetMapping("/companies/{id}")
-    public ResponseEntity<Optional<Company>> getCompanyById(@PathVariable int id) {
-        Optional<Company> company = companyServiceImplementation.getCompanyById(id);
-        if (company.isEmpty()) {
-            throw new CategoryNotFoundException("Company with id " + id + " is not found");
-        }
-        return new ResponseEntity<>(company, HttpStatus.OK);
+    public ResponseEntity<CompanyResponseDto> getCompanyById(@PathVariable long id) {
+        CompanyResponseDto companyResponseDto = companyServiceImplementation.getCompanyById(id);
+        return new ResponseEntity<>(companyResponseDto, HttpStatus.OK);
     }
 
-    //Add new Company
-    @PostMapping("/companies")
-    public ResponseEntity<String> addNewCompany(@RequestBody Company company) {
-        companyServiceImplementation.addCompany(company);
-        return new ResponseEntity<>("Company Added Successfully" , HttpStatus.OK);
-    }
 
-    //Update Product
+    //UPDATE COMPANY
     @PutMapping("/companies/{id}")
-    public ResponseEntity<Company> updateCompany(@PathVariable int id, @RequestBody Company company) {
-      Optional<Company> company1 = companyServiceImplementation.getCompanyById(id);
-      if (company1.isEmpty()){
-          throw new CategoryNotFoundException("Company with Id " +id+ " not found");
-      }
-      companyServiceImplementation.updateCompany(id,company);
+    public ResponseEntity<CompanyResponseDto> updateCompany(@PathVariable long id, @RequestBody Company company) {
 
-      return new ResponseEntity<>(company,HttpStatus.OK);
+        CompanyResponseDto companyResponseDto = companyServiceImplementation.updateCompany(id, company);
+
+        return new ResponseEntity<>(companyResponseDto, HttpStatus.OK);
     }
 
 
-    //Delete Company
+    //DELETE COMPANY
     @DeleteMapping("/companies/{id}")
     public ResponseEntity<String> deleteCompany(@PathVariable int id) {
         companyServiceImplementation.deleteCompany(id);
-        return new ResponseEntity<>("Company deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Company with id " + id + " deleted successfully", HttpStatus.OK);
     }
 
 }

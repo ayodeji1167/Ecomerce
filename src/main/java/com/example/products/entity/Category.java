@@ -15,16 +15,16 @@ import java.util.Set;
 @AllArgsConstructor
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
-    private String categoryName;
+    private String name;
 
     @Column(nullable = false)
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "category" ,fetch = FetchType.LAZY)
     private Set<Product> products;
 
 

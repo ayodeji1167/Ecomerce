@@ -6,22 +6,27 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class WishList {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private Date createdDate;
 
-    @ManyToOne
-    @JoinColumn
-    private Product product;
+    @OneToMany
+    @JoinTable(name = "wishlist_product",
+            joinColumns = @JoinColumn(name = "wishlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private Set<Product> product;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User user;
 
 }

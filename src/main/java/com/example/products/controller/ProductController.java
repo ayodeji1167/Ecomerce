@@ -1,71 +1,72 @@
 package com.example.products.controller;
 
 
-import com.example.products.entity.Product;
 import com.example.products.dto.ProductDto;
-import com.example.products.exception.ProductNotFoundException;
+import com.example.products.dto.responseDto.ProductResponseDto;
 import com.example.products.serviceimplementation.ProductServiceImplementation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 
-
+@PreAuthorize("hasRole('ADMIN')")
 public class ProductController {
-    @Autowired
-    private ProductServiceImplementation productServiceImplementation;
+
+    private final ProductServiceImplementation productServiceImplementation;
+
+    public ProductController(ProductServiceImplementation productServiceImplementation) {
+        this.productServiceImplementation = productServiceImplementation;
+    }
+
+    //ADD NEW PRODUCT
+    @PostMapping("/add/product")
+    public ResponseEntity<ProductResponseDto> addNewProduct(@RequestBody ProductDto productDto) {
+
+        ProductResponseDto product = productServiceImplementation.addProduct(productDto);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
 
 
-    //Get all products
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    //GET ALL PRODUCTS
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productServiceImplementation.getAllProducts();
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
+        List<ProductResponseDto> products = productServiceImplementation.getAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    //Get product by ID
+    //GET PRODUCT BY ID
     @GetMapping("/products/{id}")
-    public ResponseEntity<Optional<Product>> getProductById(@PathVariable int id) {
-        Optional<Product> product = productServiceImplementation.getProductById(id);
-        if (product.isEmpty()) {
-            throw new ProductNotFoundException("Product with id " + id + "is not found");
-        }
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable int id) {
+        ProductResponseDto product = productServiceImplementation.getProductById(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
 
     }
 
-    //Add new Product
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/products")
-    public ResponseEntity<String> addNewProduct(@RequestBody ProductDto productCompanyDto) {
-
-        productServiceImplementation.addProduct(productCompanyDto);
-        return new ResponseEntity<String>("Product Created Successfully", HttpStatus.OK);
-    }
-
-    //Update Product
+    //UPDATE PRODUCT
     @PutMapping("/products/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable int id, @RequestBody ProductDto productCompanyDto) {
-        Optional<Product> product1 = productServiceImplementation.getProductById(id);
-        if (product1.isEmpty()) {
-            throw new ProductNotFoundException("Product with id " + id + " is not found");
-        }
-       Product p = productServiceImplementation.updateProduct(id, productCompanyDto);
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable int id, @RequestBody ProductDto productCompanyDto) {
+        ProductResponseDto p = productServiceImplementation.updateProduct(id, productCompanyDto);
 
         return new ResponseEntity<>(p, HttpStatus.OK);
     }
 
-    //Delete a Product by ID
+    //GET PRODUCTS BY COMPANY ID
+    @GetMapping("/products/company/{id}")
+    public ResponseEntity<List<ProductResponseDto>> getProductsById(@PathVariable long id) {
+        List<ProductResponseDto> productResponseDtos = productServiceImplementation.getProductsByCompany_Id(id);
+        return new ResponseEntity<>(productResponseDtos, HttpStatus.OK);
+
+    }
+
+    //DELETE PRODUCT BY ID
     @DeleteMapping("/products/{id}")
-    public void deleteProduct(@PathVariable int id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable int id) {
         productServiceImplementation.deleteProductById(id);
+        return new ResponseEntity<>("Product with id " + id + " successfully deleted", HttpStatus.OK);
     }
 
 

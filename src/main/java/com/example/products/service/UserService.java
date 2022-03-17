@@ -10,5 +10,9 @@ public interface UserService {
 
     User createUser(UserDto userDto);
 
+    void deleteUser(long id);
+
+    User updateUser(long id, UserDto user);
+
     Optional<User> findUserById(long id);
 }

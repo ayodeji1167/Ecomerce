@@ -15,14 +15,18 @@ import java.util.Set;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    private Date createdDate;
+    private Long userId;
 
 
-    @OneToMany
+    @OneToMany()
+    @JoinTable(name = "cart_product",
+    joinColumns = @JoinColumn(name = "cart_id"),
+    inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 

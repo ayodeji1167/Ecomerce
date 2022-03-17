@@ -1,6 +1,5 @@
 package com.example.products.dto;
 
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -8,13 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class ProductDto {
+public class CartDto {
 
-
-    private Long companyId;
-    private String name;
-    private double price;
-    private Long categoryId;
-
-
+    private long productId;
+    private  long userId;
 }

@@ -1,21 +1,20 @@
 package com.example.products.service;
 
+import com.example.products.dto.responseDto.CompanyResponseDto;
 import com.example.products.entity.Company;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CompanyService {
 
-    List<Company> getAllCompanies();
+    List<CompanyResponseDto> getAllCompanies();
 
-    Optional<Company> getCompanyById(long id);
+    CompanyResponseDto getCompanyById(long id);
 
-    Company companyById(long id);
 
-    void updateCompany(long id, Company company );
+    CompanyResponseDto updateCompany(long id, Company company );
 
-    void addCompany(Company company);
+    CompanyResponseDto addCompany(Company company);
 
     void  deleteCompany(long id);
 

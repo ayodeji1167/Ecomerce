@@ -22,8 +22,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(cascade = CascadeType.PERSIST , fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
     private Company company;
 
     @Column(unique = true, nullable = false)
@@ -31,7 +31,9 @@ public class Product {
 
     private double price;
 
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.PERSIST , fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 
 

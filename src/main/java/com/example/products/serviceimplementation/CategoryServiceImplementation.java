@@ -1,5 +1,6 @@
 package com.example.products.serviceimplementation;
 
+import com.example.products.dto.responseDto.CategoryResponseDto;
 import com.example.products.entity.Category;
 import com.example.products.exception.CategoryNotFoundException;
 import com.example.products.repository.CategoryRepository;
@@ -7,6 +8,7 @@ import com.example.products.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -15,41 +17,65 @@ public class CategoryServiceImplementation implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    //Create Category
-    public Category createCategory(Category category) {
-        return categoryRepository.save(category);
+    //CREATE CATEGORY
+    public CategoryResponseDto createCategory(Category category) {
+     categoryRepository.save(category);
+     return convertCatToDto(category);
     }
 
 
-    //Get all categories
-    public List<Category> getAllCategory() {
-        return categoryRepository.findAll();
+    //GET ALL CATEGORIES
+    public List<CategoryResponseDto> getAllCategory() {
+      List<Category> categories = categoryRepository.findAll();
+      List<CategoryResponseDto> categoryResponseDtos = new ArrayList<>();
+      for (Category category : categories){
+          categoryResponseDtos.add(convertCatToDto(category));
+      }
+      return categoryResponseDtos;
     }
 
-    //Get category by id
-    public Optional<Category> getCategoryById(long id) {
+    //GET CATEGORY BY ID
+    public CategoryResponseDto getCategoryById(long id) {
        Optional<Category> category1 = categoryRepository.findById(id);
        if (category1.isPresent()){
-           return category1;
+           return convertCatToDto(category1.get());
        }
        else {
            throw new CategoryNotFoundException("Category with id " + id + " is not found");
        }
     }
 
-    //Update Category by id
-    public Category updateCategoryById(long id, Category category) {
-        Optional<Category> category1 = categoryRepository.findById(id);
-        if (category1.isPresent()){
-            return categoryRepository.save(category);
-        }
-        else {
-            throw new CategoryNotFoundException("Category with id " + id + " is not found");
-        }
+    //UPDATE CATEGORY BY ID
+    public CategoryResponseDto updateCategoryById(long id, Category category) {
+        Category category1 = categoryRepository.findById(id).orElseThrow(() ->  new CategoryNotFoundException
+                ("Category with id " + id + " is not found"));
+        category1.setId(id);
+        category1.setName(category.getName());
+        category1.setDescription(category.getDescription());
+        category1.setProducts(category.getProducts());
+
+        categoryRepository.save(category1);
+
+        return convertCatToDto(category1);
+
     }
 
-    //Return true if category is present
-    public boolean isCategoryPresent(long id) {
-        return categoryRepository.findById(id).isPresent();
+
+   //DELETE CATEGORY
+    public void deleteCategory(long id){
+        categoryRepository.deleteById(id);
     }
+
+
+    //PRIVATE METHODS FOR EASY IMPLEMENTATIONS
+
+    private static CategoryResponseDto convertCatToDto(Category category){
+        CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
+        categoryResponseDto.setId(category.getId());
+        categoryResponseDto.setName(category.getName());
+        categoryResponseDto.setDescription(category.getDescription());
+
+        return categoryResponseDto;
+    }
+
 }
