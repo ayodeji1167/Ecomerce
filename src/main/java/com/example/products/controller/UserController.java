@@ -1,6 +1,6 @@
 package com.example.products.controller;
 
-import com.example.products.dto.UserDto;
+import com.example.products.dto.requestDto.UserDto;
 import com.example.products.entity.User;
 import com.example.products.serviceimplementation.UserServiceImplementation;
 import org.springframework.http.HttpStatus;

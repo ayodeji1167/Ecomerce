@@ -1,4 +1,4 @@
-package com.example.products.dto;
+package com.example.products.dto.requestDto;
 
 
 public class UserDto {

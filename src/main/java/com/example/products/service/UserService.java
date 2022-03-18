@@ -1,6 +1,6 @@
 package com.example.products.service;
 
-import com.example.products.dto.UserDto;
+import com.example.products.dto.requestDto.UserDto;
 import com.example.products.entity.User;
 
 import java.util.Optional;

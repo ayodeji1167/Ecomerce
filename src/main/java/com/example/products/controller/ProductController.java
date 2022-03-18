@@ -1,7 +1,7 @@
 package com.example.products.controller;
 
 
-import com.example.products.dto.ProductDto;
+import com.example.products.dto.requestDto.ProductDto;
 import com.example.products.dto.responseDto.ProductResponseDto;
 import com.example.products.serviceimplementation.ProductServiceImplementation;
 import org.springframework.http.HttpStatus;

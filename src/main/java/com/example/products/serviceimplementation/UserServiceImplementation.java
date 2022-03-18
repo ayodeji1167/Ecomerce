@@ -1,6 +1,7 @@
 package com.example.products.serviceimplementation;
 
-import com.example.products.dto.UserDto;
+import com.example.products.dto.requestDto.UserDto;
+import com.example.products.entity.Cart;
 import com.example.products.entity.Role;
 import com.example.products.entity.User;
 import com.example.products.exception.UserNotFoundException;
@@ -42,12 +43,15 @@ public class UserServiceImplementation implements UserService {
     //METHOD FOR CREATING A NEUTRAL USER
     private User createNeutralUser(UserDto userDto) {
         User user = new User();
+        Cart cart = new Cart();
         user.setUsername(userDto.getUsername());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
         user.setEnabled(true);
+        user.setCart(cart);
+        cart.setUser(user);
         return user;
     }
 

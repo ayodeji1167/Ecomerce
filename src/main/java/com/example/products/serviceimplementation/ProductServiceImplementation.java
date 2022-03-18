@@ -1,6 +1,6 @@
 package com.example.products.serviceimplementation;
 
-import com.example.products.dto.ProductDto;
+import com.example.products.dto.requestDto.ProductDto;
 import com.example.products.dto.responseDto.ProductResponseDto;
 import com.example.products.entity.Category;
 import com.example.products.entity.Company;

@@ -1,6 +1,7 @@
 package com.example.products.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,9 +20,10 @@ public class Product {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST , fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -32,6 +34,7 @@ public class Product {
     private double price;
 
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST , fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;

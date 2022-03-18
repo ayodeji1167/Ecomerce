@@ -1,6 +1,7 @@
 package com.example.products.dto.responseDto;
 
 
+import com.example.products.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,10 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class CartResponseDto {
 
-    private Set<ProductResponseDto> productResponseDto;
+    private long cartId;
+    private int quantity;
+    private Set<ProductResponseDto> productResponseDtos;
+    private User user;
+
 
 }

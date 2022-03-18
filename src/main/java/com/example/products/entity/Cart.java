@@ -1,12 +1,13 @@
 package com.example.products.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -15,17 +16,16 @@ import java.util.Set;
 public class Cart {
 
     @Id
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 
-    @OneToMany()
-    @JoinTable(name = "cart_product",
-    joinColumns = @JoinColumn(name = "cart_id"),
-    inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products;
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER ,mappedBy = "cart")
+    private List<CartItem> cartItems;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
 

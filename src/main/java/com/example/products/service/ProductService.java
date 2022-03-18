@@ -2,7 +2,7 @@ package com.example.products.service;
 
 import com.example.products.dto.responseDto.ProductResponseDto;
 import com.example.products.entity.Product;
-import com.example.products.dto.ProductDto;
+import com.example.products.dto.requestDto.ProductDto;
 
 import java.util.List;
 import java.util.Optional;
