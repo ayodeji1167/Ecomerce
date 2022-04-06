@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
-    //User not found handler
+    //AppUser not found handler
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?>  userNotFoundHandler (UserNotFoundException userNotFoundException) {
         ErrorDetails errorDetails = new ErrorDetails

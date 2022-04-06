@@ -52,7 +52,6 @@ public class CategoryServiceImplementation implements CategoryService {
         category1.setId(id);
         category1.setName(category.getName());
         category1.setDescription(category.getDescription());
-        category1.setProducts(category.getProducts());
 
         categoryRepository.save(category1);
 

@@ -1,9 +1,11 @@
 package com.example.products.serviceimplementation;
 
+import com.example.products.dto.requestDto.ShippingAddressDto;
 import com.example.products.dto.requestDto.UserDto;
+import com.example.products.entity.AppUser;
 import com.example.products.entity.Cart;
 import com.example.products.entity.Role;
-import com.example.products.entity.User;
+import com.example.products.entity.ShippingAddress;
 import com.example.products.exception.UserNotFoundException;
 import com.example.products.repository.UserRepo;
 import com.example.products.service.UserService;
@@ -26,33 +28,36 @@ public class UserServiceImplementation implements UserService {
 
     //CREATE A USER
     @Override
-    public User createUser(UserDto userDto) {
-        User user = createNeutralUser(userDto);
-        user.setRole(Role.USER);
-        return userRepo.save(user);
+    public AppUser createUser(UserDto userDto) {
+        AppUser appUser = createNeutralUser(userDto);
+        appUser.setRole(Role.USER);
+        return userRepo.save(appUser);
     }
 
     //CREATE AN ADMIN
-    public User createAdmin(UserDto userDto) {
-        User admin = createNeutralUser(userDto);
+    public AppUser createAdmin(UserDto userDto) {
+        AppUser admin = createNeutralUser(userDto);
         admin.setRole(Role.ADMIN);
 
         return userRepo.save(admin);
     }
 
+
+
     //METHOD FOR CREATING A NEUTRAL USER
-    private User createNeutralUser(UserDto userDto) {
-        User user = new User();
+    private AppUser createNeutralUser(UserDto userDto) {
+        AppUser appUser = new AppUser();
         Cart cart = new Cart();
-        user.setUsername(userDto.getUsername());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setEmail(userDto.getEmail());
-        user.setEnabled(true);
-        user.setCart(cart);
-        cart.setUser(user);
-        return user;
+        System.out.println(cart);
+        appUser.setUsername(userDto.getUsername());
+        appUser.setFirstName(userDto.getFirstName());
+        appUser.setLastName(userDto.getLastName());
+        appUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        appUser.setEmail(userDto.getEmail());
+        appUser.setEnabled(true);
+        appUser.setCart(cart);
+        cart.setAppUser(appUser);
+        return appUser;
     }
 
     //DELETE USER
@@ -61,27 +66,48 @@ public class UserServiceImplementation implements UserService {
     }
 
     //UPDATE USER
-    public User updateUser(long id, UserDto userDto) {
-        User user1 = userRepo.findById(id).orElseThrow(() -> new UsernameNotFoundException("User with id " + id + " not found"));
-        user1.setId(id);
-        user1.setUsername(userDto.getUsername());
-        user1.setFirstName(userDto.getFirstName());
-        user1.setLastName(userDto.getLastName());
-        user1.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user1.setEnabled(true);
-        user1.setEmail(userDto.getEmail());
-        user1.setRole(Role.USER);
+    public AppUser updateUser(long id, UserDto userDto) {
+        AppUser appUser1 = userRepo.findById(id).orElseThrow(() -> new UsernameNotFoundException("AppUser with id " + id + " not found"));
+        appUser1.setId(id);
+        appUser1.setUsername(userDto.getUsername());
+        appUser1.setFirstName(userDto.getFirstName());
+        appUser1.setLastName(userDto.getLastName());
+        appUser1.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        appUser1.setEnabled(true);
+        appUser1.setEmail(userDto.getEmail());
+        appUser1.setRole(Role.USER);
 
-        return userRepo.save(user1);
+        return userRepo.save(appUser1);
     }
 
 
     //GET USER BY ID
-    public Optional<User> findUserById(long id) {
-        Optional<User> user = userRepo.findById(id);
+    public Optional<AppUser> findUserById(long id) {
+        Optional<AppUser> user = userRepo.findById(id);
         if (user.isEmpty()) {
             throw new UserNotFoundException("This user is not found");
         }
         return user;
+    }
+
+    //SET SHIPPING ADDRESS
+    public AppUser setShippingAddress(ShippingAddressDto shippingAddressDto, long userId){
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id " +userId + " not found"));
+        ShippingAddress shippingAddress = convertShippingAdDto(shippingAddressDto);
+        user.setShippingAddress(shippingAddress);
+
+        return userRepo.save(user);
+    }
+
+    //CONVERT SHIPPING DTO TO ENTITY
+
+    private ShippingAddress convertShippingAdDto(ShippingAddressDto shippingAddressDto){
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setCountry(shippingAddressDto.getCountry());
+        shippingAddress.setState(shippingAddressDto.getState());
+        shippingAddress.setCity(shippingAddressDto.getCity());
+        shippingAddress.setZipcode(shippingAddressDto.getZipcode());
+        shippingAddress.setHomeAddress(shippingAddressDto.getHomeAddress());
+        return shippingAddress;
     }
 }

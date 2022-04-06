@@ -2,19 +2,18 @@ package com.example.products.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import javax.persistence.*;
 
 
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Getter
+@Setter
+@ToString
 @Entity
 public class Product {
 

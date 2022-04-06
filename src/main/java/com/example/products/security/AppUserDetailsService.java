@@ -1,6 +1,6 @@
 package com.example.products.security;
 
-import com.example.products.entity.User;
+import com.example.products.entity.AppUser;
 import com.example.products.repository.UserRepo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +18,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
-        return new AppUserDetails(user);
+        AppUser appUser = userRepo.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
+        return new AppUserDetails(appUser);
     }
 }

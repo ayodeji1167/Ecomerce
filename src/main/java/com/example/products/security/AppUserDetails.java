@@ -1,6 +1,6 @@
 package com.example.products.security;
 
-import com.example.products.entity.User;
+import com.example.products.entity.AppUser;
 import org.springframework.security.core.GrantedAuthority;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,15 +14,15 @@ public class AppUserDetails implements UserDetails {
     private final String username;
     private final boolean isEnabled;
 
-    private User user;
+    private AppUser appUser;
 
 
 
-    public AppUserDetails( User user1) {
-        this.authorities = user1.getRole().getGrantedAuthorities();
-        this.isEnabled = user1.isEnabled();
-        this.password = user1.getPassword();
-        this.username = user1.getUsername();
+    public AppUserDetails( AppUser appUser1) {
+        this.authorities = appUser1.getRole().getGrantedAuthorities();
+        this.isEnabled = appUser1.isEnabled();
+        this.password = appUser1.getPassword();
+        this.username = appUser1.getUsername();
     }
 
 

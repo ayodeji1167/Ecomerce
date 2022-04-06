@@ -1,15 +1,15 @@
 package com.example.products.repository;
 
-import com.example.products.dto.responseDto.CartResponseDto;
+import com.example.products.entity.AppUser;
 import com.example.products.entity.Cart;
-import com.example.products.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
-    Cart getCartByUser(User user);
-    List<Cart> getCartsByUser(User user);
+    Optional<Cart> getByAppUser_Id(long id);
+
 }

@@ -59,7 +59,6 @@ public class CompanyServiceImplementation implements CompanyService {
         company1.setId(id);
         company1.setDescription(company.getDescription());
         company1.setName(company.getName());
-        company1.setProducts(company.getProducts());
 
         companyRepository.save(company1);
         return convertCompanyToDto(company1);

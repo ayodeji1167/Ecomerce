@@ -1,28 +1,32 @@
 package com.example.products.entity;
 
-
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
-
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+@Getter
+@Setter
+public class ShippingAddress {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    private String country;
+    private String state;
 
-    @Column(nullable = false)
-    private String description;
+    private String city;
+
+    private String zipcode;
+
+    private String homeAddress;
+
 
 
 

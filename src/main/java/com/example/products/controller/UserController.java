@@ -1,68 +1,73 @@
 package com.example.products.controller;
 
+import com.example.products.dto.requestDto.ShippingAddressDto;
 import com.example.products.dto.requestDto.UserDto;
-import com.example.products.entity.User;
-import com.example.products.serviceimplementation.UserServiceImplementation;
+import com.example.products.entity.AppUser;
+import com.example.products.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
-    private final UserServiceImplementation userServiceImplementation;
+    private final UserService userService;
 
-    public UserController(UserServiceImplementation userServiceImplementation) {
-        this.userServiceImplementation = userServiceImplementation;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-
     //CREATE A NORMAL USER
-    @PostMapping("/add/user")
+    @PostMapping("/add")
     public ResponseEntity<?> addNewUser(@RequestBody UserDto userDto) {
-        User user = userServiceImplementation.createUser(userDto);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        AppUser appUser = userService.createUser(userDto);
+        return new ResponseEntity<>(appUser, HttpStatus.OK);
 
+    }
+
+    //SET SHIPPING ADDRESS
+    @PostMapping("/address/{userId}")
+    public ResponseEntity<AppUser> setShippingAddress(@RequestBody ShippingAddressDto shippingAddressDto, @PathVariable long userId) {
+
+        AppUser user = userService.setShippingAddress(shippingAddressDto, userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     //CREATE AN ADMIN
     @PostMapping("/add/admin")
     public ResponseEntity<?> createAdmin(@RequestBody UserDto userDto) {
-        User user = userServiceImplementation.createAdmin(userDto);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        AppUser appUser = userService.createAdmin(userDto);
+        return new ResponseEntity<>(appUser, HttpStatus.OK);
 
     }
 
 
     //GET USER BY ID
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/user/{id}")
-    public ResponseEntity<Optional<User>> getUserById(@PathVariable int id) {
-        Optional<User> user = userServiceImplementation.findUserById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<AppUser>> getUserById(@PathVariable int id) {
+        Optional<AppUser> user = userService.findUserById(id);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 
     //UPDATE A USER
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/user/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody UserDto userDto , @PathVariable long id){
-        User user = userServiceImplementation.updateUser(id,userDto);
-        return new ResponseEntity<>(user,HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<AppUser> updateUser(@RequestBody UserDto userDto, @PathVariable long id) {
+        AppUser appUser = userService.updateUser(id, userDto);
+        return new ResponseEntity<>(appUser, HttpStatus.OK);
 
     }
 
 
     //DELETE A USER
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable long id) {
-        userServiceImplementation.deleteUser(id);
-        return new ResponseEntity<>("User with id " + id + " deleted successfully!", HttpStatus.OK);
+        userService.deleteUser(id);
+        return new ResponseEntity<>("AppUser with id " + id + " deleted successfully!", HttpStatus.OK);
 
     }
 

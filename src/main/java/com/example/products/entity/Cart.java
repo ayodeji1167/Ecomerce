@@ -1,15 +1,14 @@
 package com.example.products.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.repository.cdi.Eager;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -19,16 +18,17 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private double totalPrice;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER ,mappedBy = "cart")
-    private List<CartItem> cartItems;
+    private int itemsNumber;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER ,mappedBy = "cart")
+    private Set<CartItem> cartItems;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnore
-    private User user;
-
-
+    private AppUser appUser;
 
 
 }

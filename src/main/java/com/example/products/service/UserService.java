@@ -1,18 +1,23 @@
 package com.example.products.service;
 
+import com.example.products.dto.requestDto.ShippingAddressDto;
 import com.example.products.dto.requestDto.UserDto;
-import com.example.products.entity.User;
+import com.example.products.entity.AppUser;
+import com.example.products.entity.ShippingAddress;
 
 import java.util.Optional;
 
 
 public interface UserService {
 
-    User createUser(UserDto userDto);
+    AppUser createUser(UserDto userDto);
+    AppUser createAdmin(UserDto userDto);
 
     void deleteUser(long id);
 
-    User updateUser(long id, UserDto user);
+    AppUser updateUser(long id, UserDto user);
 
-    Optional<User> findUserById(long id);
+    Optional<AppUser> findUserById(long id);
+
+    AppUser setShippingAddress(ShippingAddressDto shippingAddressDto, long userId);
 }
