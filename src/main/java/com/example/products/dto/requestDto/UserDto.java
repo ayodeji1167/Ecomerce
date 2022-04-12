@@ -1,6 +1,9 @@
 package com.example.products.dto.requestDto;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class UserDto {
     private String username;
     private String firstName;

@@ -1,6 +1,5 @@
 package com.example.products.serviceimplementation;
 
-import com.example.products.entity.AppUser;
 import com.example.products.entity.Cart;
 import com.example.products.entity.CartItem;
 import com.example.products.entity.Product;
@@ -31,12 +30,12 @@ public class CartItemServiceImplementation implements CartItemService {
 
 
     //ADDING ITEM TO THE CART
-    public CartItem addToCart(long userId, long productId) {
-        AppUser appUser = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
-        Cart cart = appUser.getCart();
+    public CartItem addToCart(long cartId, long productId) {
+        Cart cart = cartRepo.findById(cartId).orElseThrow(() -> new UserNotFoundException("Cart with Id " + cartId + " not found"));
 
         Product product = productRepo.findById(productId).orElseThrow(() -> new ProductNotFoundException
                 ("Product with id " + productId + " not found"));
+
 
         return addItem(cart, product);
     }
@@ -49,23 +48,23 @@ public class CartItemServiceImplementation implements CartItemService {
     private CartItem addItem(Cart cart, Product product) {
 
         Set<CartItem> cartItems = cart.getCartItems();
-        if (cartItems.isEmpty())
+        if (cartItems.isEmpty()) {
             return saveANewCartItem(product, cart);
+        }
 
 
         for (CartItem cartItem : cartItems) {
 
             if (product.getId() == cartItem.getProduct().getId()) {
+
                 cartItem.setProductQuantity(cartItem.getProductQuantity() + 1);
                 cartItem.setTotalPrice(cartItem.getProductQuantity() * cartItem.getProduct().getPrice());
 
 
                 //UPDATING YOUR CART
                 double cartTotalPrice = cart.getTotalPrice();
-                int cartTotalItems = cart.getItemsNumber();
 
                 cart.setTotalPrice(cartTotalPrice + product.getPrice());
-                cart.setItemsNumber(cartTotalItems + 1);
                 cartRepo.save(cart);
                 return cartItemRepo.save(cartItem);
             }
@@ -75,7 +74,6 @@ public class CartItemServiceImplementation implements CartItemService {
 
     private CartItem saveANewCartItem(Product product, Cart cart) {
         CartItem cartItem = new CartItem();
-
         cartItem.setProductQuantity(1);
         cartItem.setProductName(product.getName());
         cartItem.setTotalPrice(product.getPrice());
@@ -99,26 +97,54 @@ public class CartItemServiceImplementation implements CartItemService {
 
 
     //REMOVING ITEM FROM THE CART
-    public String remove(long itemId) {
+    public void remove(long itemId, long cartId) {
 
-        CartItem cartItem = cartItemRepo.findById(itemId).orElseThrow(() ->
-                new ProductNotFoundException("Cart with id " + itemId + " not found"));
+        Cart cart = cartRepo.findById(cartId).orElseThrow(() -> new UserNotFoundException("Cart with Id " + cartId + " not found"));
+
+        Set<CartItem> cartItems = cart.getCartItems();
+        if (cartItems.isEmpty()) {
+            throw new RuntimeException("Cart is Empty");
+        }
+
+        CartItem cartItem = new CartItem();
+
+        for (CartItem cartItem1 : cartItems) {
+            if (cartItem1.getId() == itemId)
+                cartItem = cartItem1;
+        }
+
 
         if (cartItem.getProductQuantity() == 1) {
-            deleteItem(itemId);
-            return "Item with id " + itemId + " successfully deleted";
 
-        } else {
+
+            System.out.println("Oh my quantity is  one");
+
+
+            cart.getCartItems().remove(cartItem);
+
+            cartRepo.save(cart);
+            cartItemRepo.delete(cartItem);
+
+
+            System.out.println("Deleting entity not working");
+
+
+
+        }
+
+
+        else {
+            System.out.println("My quantity is more than 1");
             cartItem.setProductQuantity(cartItem.getProductQuantity() - 1);
             cartItem.setTotalPrice(cartItem.getProductQuantity() * cartItem.getProduct().getPrice());
             cartItemRepo.save(cartItem);
-            return "Item with id " + itemId + " successfully reduced";
         }
 
 
     }
 
     public void deleteItem(long itemId) {
+        System.out.println("Im called to d elete !!");
         cartItemRepo.deleteById(itemId);
     }
 }

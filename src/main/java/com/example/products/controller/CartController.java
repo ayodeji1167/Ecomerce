@@ -19,16 +19,16 @@ public class CartController {
     }
 
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<CartResponseDto> getCartItems(@PathVariable long userId) {
-        return new ResponseEntity<>(cartService.getCartByUserId(userId), HttpStatus.OK);
+    @GetMapping("/{cartId}")
+    public ResponseEntity<CartResponseDto> getCartItems(@PathVariable long cartId) {
+        return new ResponseEntity<>(cartService.getCartById(cartId), HttpStatus.OK);
     }
 
     @DeleteMapping("/checkout/{userId}")
     public ResponseEntity<?> checkoutCart(@PathVariable long userId) {
         cartService.checkOut(userId);
-        String username = userService.findUserById(userId).get().getFirstName();
-        String message = "Hello " + " your order has been placed and is on its way " + " thanks for shopping";
+        String username = userService.findUserById(userId).getFirstName();
+        String message = "Hello " + username + " your order has been placed and is on its way " + " thanks for shopping";
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

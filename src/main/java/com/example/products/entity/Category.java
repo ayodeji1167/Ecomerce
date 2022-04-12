@@ -4,6 +4,7 @@ package com.example.products.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -25,5 +26,8 @@ public class Category {
     private String description;
 
 
-
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

@@ -4,7 +4,7 @@ import com.example.products.dto.responseDto.CartResponseDto;
 import com.example.products.entity.Cart;
 
 public interface CartService {
-     CartResponseDto getCartByUserId(long userId);
+     CartResponseDto getCartById(long cartId);
 
     void checkOut(long userId) ;
 

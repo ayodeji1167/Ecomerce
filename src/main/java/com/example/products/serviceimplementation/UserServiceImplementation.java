@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserServiceImplementation implements UserService {
     private final UserRepo userRepo;
@@ -45,10 +43,9 @@ public class UserServiceImplementation implements UserService {
 
 
     //METHOD FOR CREATING A NEUTRAL USER
-    private AppUser createNeutralUser(UserDto userDto) {
+    public AppUser createNeutralUser(UserDto userDto) {
         AppUser appUser = new AppUser();
         Cart cart = new Cart();
-        System.out.println(cart);
         appUser.setUsername(userDto.getUsername());
         appUser.setFirstName(userDto.getFirstName());
         appUser.setLastName(userDto.getLastName());
@@ -82,12 +79,8 @@ public class UserServiceImplementation implements UserService {
 
 
     //GET USER BY ID
-    public Optional<AppUser> findUserById(long id) {
-        Optional<AppUser> user = userRepo.findById(id);
-        if (user.isEmpty()) {
-            throw new UserNotFoundException("This user is not found");
-        }
-        return user;
+    public AppUser findUserById(long id) {
+        return userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("User with Id "+ id +" not found"));
     }
 
     //SET SHIPPING ADDRESS
@@ -100,7 +93,6 @@ public class UserServiceImplementation implements UserService {
     }
 
     //CONVERT SHIPPING DTO TO ENTITY
-
     private ShippingAddress convertShippingAdDto(ShippingAddressDto shippingAddressDto){
         ShippingAddress shippingAddress = new ShippingAddress();
         shippingAddress.setCountry(shippingAddressDto.getCountry());

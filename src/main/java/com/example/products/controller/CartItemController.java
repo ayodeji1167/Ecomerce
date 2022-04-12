@@ -16,21 +16,22 @@ public class CartItemController {
     }
 
 
-    @PostMapping("/add/{userId}/{productId}")
-    public ResponseEntity<?> addItem(@PathVariable long userId, @PathVariable long productId) {
-        cartItemService.addToCart(userId, productId);
+    @PostMapping("/add/{cartId}/{productId}")
+    public ResponseEntity<?> addItem(@PathVariable long cartId, @PathVariable long productId) {
+        cartItemService.addToCart(cartId, productId);
         return new ResponseEntity<>("Item has been added", HttpStatus.OK);
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CartItem> getCCartItemById(@PathVariable Long id){
-        return new ResponseEntity<>(cartItemService.getCartItemById(id) , HttpStatus.OK);
+    public ResponseEntity<CartItem> getCCartItemById(@PathVariable Long id) {
+        return new ResponseEntity<>(cartItemService.getCartItemById(id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> removeItem(@PathVariable long id) {
-        return new ResponseEntity<>(cartItemService.remove(id), HttpStatus.OK);
+    @DeleteMapping("/delete/{cartId}/{itemId}")
+    public ResponseEntity<?> removeItem(@PathVariable long cartId, long itemId) {
+        cartItemService.remove(cartId, itemId);
+        return new ResponseEntity<>("Item with id " + itemId + " deleted", HttpStatus.OK);
 
     }
 }

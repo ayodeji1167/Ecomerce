@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,8 +34,8 @@ public class CartServiceImplementation implements CartService {
 
 
     @Override
-    public CartResponseDto getCartByUserId(long userId) {
-        Cart cart = cartRepo.getByAppUser_Id(userId).orElseThrow(() -> new UsernameNotFoundException("Cart with userId " + userId + " not found"));
+    public CartResponseDto getCartById(long userId) {
+        Cart cart = cartRepo.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Cart with Id " + userId + " not found"));
 
         double totalPrice = 0.0;
         int itemsNumber = 0;
@@ -62,16 +61,19 @@ public class CartServiceImplementation implements CartService {
     }
 
     @Transactional
-    public void checkOut(long userId) {
-        AppUser user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("Not found"));
-        Cart cart = cartRepo.getByAppUser_Id(userId).orElseThrow(() -> new UserNotFoundException("Not found"));
+    public void checkOut(long cartId) {
+        Cart cart = cartRepo.findById(cartId).orElseThrow(() -> new UserNotFoundException(" Cart with Id " + cartId + " not found"));
 
+
+        AppUser appUser = userRepo.findAppUserByCartId(cartId);
         //Some Payment Logics
 
         //After Payment, Save The Products  To ORDERED PRODUCTS
-        saveOrderedProducts(cart, user);
 
-        cartItemRepo.deleteCartItemsByCart_Id(cart.getId());
+
+        //saveOrderedProducts(cart, appUser);
+
+        cartItemRepo.deleteCartItemsByCartId(cart.getId());
 
         cart.setItemsNumber(0);
         cart.setTotalPrice(0);

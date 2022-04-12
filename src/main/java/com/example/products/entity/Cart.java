@@ -9,6 +9,7 @@ import java.util.*;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,13 +23,18 @@ public class Cart {
 
     private int itemsNumber;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER ,mappedBy = "cart")
+    @JsonIgnore
+    @OneToMany( fetch = FetchType.LAZY ,mappedBy = "cart")
     private Set<CartItem> cartItems;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
+    @JoinColumn(name = "user_id" , unique = true)
     private AppUser appUser;
 
-
+    public Cart(double totalPrice, int itemsNumber, Set<CartItem> cartItems, AppUser appUser) {
+        this.totalPrice = totalPrice;
+        this.itemsNumber = itemsNumber;
+        this.cartItems = cartItems;
+        this.appUser = appUser;
+    }
 }

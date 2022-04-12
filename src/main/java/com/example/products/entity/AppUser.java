@@ -13,6 +13,7 @@ public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
     @Column(unique = true)
@@ -34,7 +35,7 @@ public class AppUser {
     private boolean enabled;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id" , unique = true)
     private Cart cart;
 
 
@@ -43,19 +44,6 @@ public class AppUser {
     private ShippingAddress shippingAddress;
 
 
-    @Override
-    public String toString() {
-        return "AppUser{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                ", enabled=" + enabled +
-                ", cart=" + cart +
-                ", shippingAddress=" + shippingAddress +
-                '}';
-    }
+
+
 }

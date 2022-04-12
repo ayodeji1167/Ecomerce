@@ -3,7 +3,7 @@ package com.example.products.service;
 import com.example.products.entity.CartItem;
 
 public interface CartItemService {
-    public String remove(long itemId);
+    public void remove(long itemId , long cartId);
 
     public void deleteItem(long itemId);
 

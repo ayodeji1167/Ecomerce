@@ -34,8 +34,15 @@ public class OrderedProducts {
     @CreationTimestamp
     private LocalDateTime createdDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private AppUser user;
 
-
+    public OrderedProducts(double totalPrice, String customerName, List<Product> products, OrderStatus orderStatus, LocalDateTime createdDate, AppUser user) {
+        this.totalPrice = totalPrice;
+        this.customerName = customerName;
+        this.products = products;
+        this.orderStatus = orderStatus;
+        this.createdDate = createdDate;
+        this.user = user;
+    }
 }

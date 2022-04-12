@@ -9,4 +9,5 @@ public interface UserRepo extends JpaRepository<AppUser,Long> {
 
     Optional<AppUser> findUserByUsername(String username);
 
+    AppUser findAppUserByCartId(long cartId);
 }

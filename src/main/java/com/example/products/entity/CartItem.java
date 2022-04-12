@@ -1,10 +1,7 @@
 package com.example.products.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,7 +9,8 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class CartItem {
 
     @Id
@@ -27,14 +25,22 @@ public class CartItem {
 
     private long productQuantity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+
+    @ManyToOne
     @JoinColumn(name = "cart_id")
     @JsonIgnore
     private Cart cart;
 
+    public CartItem(double productPrice, double totalPrice, String productName, long productQuantity, Product product) {
+        this.productPrice = productPrice;
+        this.totalPrice = totalPrice;
+        this.productName = productName;
+        this.productQuantity = productQuantity;
+        this.product = product;
 
+    }
 }
