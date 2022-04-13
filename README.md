@@ -11,37 +11,26 @@ modules
 
 2. **CRUD Operations for Category, Company, and Product**
 
-* User can add Items to their cart 
-* Users can remove product from cart.
-* Admin can delete the product from the list.
+* User can add , delete Items to their cart
+* Users can reduce the uantity of a particular item in the cart 
+
 
 3. **Spring Security**
 
-* User can login into the site.
-* The entire site will change according to the role, depending on whether the client is User or Admin.
-* User can logout after completing.
+* Method Levle Security
+* Any request can hit the registration endpoint
+* Different endpoint for USER and ADMIN registration
+* Only ADMIN can edit COMPANY, PRODUCT, CATEGORY AND USER.
+
+
 
 4 **Check Out**
 * After adding products the cart the User can checkout .
-* Confirming User Details.
+* After Checking Out, all checked - out products will be saved to DB as (ORDERED PRODUCTS)
 * Confirming Shipping and Billing Address.
 
 
-### Tools and Technologies:
 
-* **Technology** :  Java, Spring Boot, Hibernate, Maven.
-* **Application Servicer**: Apache Tomcat Server.
-* **Database** :MySQL
-
-
-10. Run the server.
-
-#### Somethings wrong!!
-
-If you find that something's wrong with this package, you can let me know by raising an issue on the GitHub issue tracker, 
-or take it as a task and 🧑‍💻 resolve it 💪 --> create a PullRequest 🛠.
-
-#### Contribution
 
 Contributors are most welcome.
 
