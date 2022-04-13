@@ -4,6 +4,7 @@ package com.example.products.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -24,8 +25,9 @@ public class Category {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "category" ,fetch = FetchType.LAZY)
-    private Set<Product> products;
 
-
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

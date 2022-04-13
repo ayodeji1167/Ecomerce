@@ -1,8 +1,9 @@
 package com.example.products.serviceimplementation;
 
+import com.example.products.dto.requestDto.CategoryDto;
 import com.example.products.dto.responseDto.CategoryResponseDto;
 import com.example.products.entity.Category;
-import com.example.products.exception.CategoryNotFoundException;
+import com.example.products.exception.CategoryException;
 import com.example.products.repository.CategoryRepository;
 import com.example.products.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,15 @@ public class CategoryServiceImplementation implements CategoryService {
     private CategoryRepository categoryRepository;
 
     //CREATE CATEGORY
-    public CategoryResponseDto createCategory(Category category) {
-     categoryRepository.save(category);
-     return convertCatToDto(category);
+    public CategoryResponseDto createCategory(CategoryDto categoryDto) {
+
+        Category category = new Category();
+        category.setName(categoryDto.getName());
+        category.setDescription(categoryDto.getDescription());
+
+        categoryRepository.save(category);
+
+        return convertCatToDto(category);
     }
 
 
@@ -41,18 +48,17 @@ public class CategoryServiceImplementation implements CategoryService {
            return convertCatToDto(category1.get());
        }
        else {
-           throw new CategoryNotFoundException("Category with id " + id + " is not found");
+           throw new CategoryException("Category with id " + id + " is not found");
        }
     }
 
     //UPDATE CATEGORY BY ID
     public CategoryResponseDto updateCategoryById(long id, Category category) {
-        Category category1 = categoryRepository.findById(id).orElseThrow(() ->  new CategoryNotFoundException
+        Category category1 = categoryRepository.findById(id).orElseThrow(() -> new CategoryException
                 ("Category with id " + id + " is not found"));
         category1.setId(id);
         category1.setName(category.getName());
         category1.setDescription(category.getDescription());
-        category1.setProducts(category.getProducts());
 
         categoryRepository.save(category1);
 

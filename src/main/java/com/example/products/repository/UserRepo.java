@@ -1,11 +1,13 @@
 package com.example.products.repository;
 
-import com.example.products.entity.User;
+import com.example.products.entity.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepo extends JpaRepository<User,Long> {
+public interface UserRepo extends JpaRepository<AppUser,Long> {
 
-    Optional<User> findUserByUsername(String username);
+    Optional<AppUser> findUserByUsername(String username);
+
+    AppUser findAppUserByCartId(long cartId);
 }

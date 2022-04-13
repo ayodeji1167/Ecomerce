@@ -6,66 +6,50 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-//Name already exist handler
-    @ExceptionHandler(NameAlreadyExistException.class)
-    public ResponseEntity<?> nameAlreadyExistHandler(NameAlreadyExistException nameAlreadyExistException) {
+    @ExceptionHandler(AppUserException.class)
+    public ResponseEntity<?> nameAlreadyExistHandler(AppUserException appUserException) {
         ErrorDetails errorDetails = new ErrorDetails
-                (nameAlreadyExistException.getMessage(),
+                (appUserException.getMessage(),
                         HttpStatus.BAD_REQUEST,
-                        ZonedDateTime.now(ZoneId.of("Z")));
+                        LocalDateTime.now());
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(ProductException.class)
+    public ResponseEntity<?> productNotFound(ProductException productException) {
+        ErrorDetails errorDetails = new ErrorDetails
+                (productException.getMessage(),
+                        HttpStatus.BAD_REQUEST,
+                        LocalDateTime.now());
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
 
-    //Product not found handler
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<?> productNotFound (ProductNotFoundException productNotFoundException) {
+    @ExceptionHandler(CategoryException.class)
+    public ResponseEntity<?> categoryNotFoundException(CategoryException categoryException) {
         ErrorDetails errorDetails = new ErrorDetails
-                (productNotFoundException.getMessage(),
+                (categoryException.getMessage(),
                         HttpStatus.BAD_REQUEST,
-                        ZonedDateTime.now(ZoneId.of("Z")));
+                        LocalDateTime.now());
+
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
 
-    //Category not found handler
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<?>  categoryNotFoundException (CategoryNotFoundException categoryNotFoundException) {
+    @ExceptionHandler(CompanyException.class)
+    public ResponseEntity<?> companyNotFoundHandler(CompanyException companyException) {
         ErrorDetails errorDetails = new ErrorDetails
-                (categoryNotFoundException.getMessage(),
+                (companyException.getMessage(),
                         HttpStatus.BAD_REQUEST,
-                        ZonedDateTime.now(ZoneId.of("Z")));
-
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-    }
-
-    //Company not found handler
-    @ExceptionHandler(CompanyNotFoundException.class)
-    public ResponseEntity<?>  companyNotFoundHandler (CompanyNotFoundException companyNotFoundException) {
-        ErrorDetails errorDetails = new ErrorDetails
-                (companyNotFoundException.getMessage(),
-                        HttpStatus.BAD_REQUEST,
-                        ZonedDateTime.now(ZoneId.of("Z")));
-
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-    }
-
-    //User not found handler
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?>  userNotFoundHandler (UserNotFoundException userNotFoundException) {
-        ErrorDetails errorDetails = new ErrorDetails
-                (userNotFoundException.getMessage(),
-                        HttpStatus.BAD_REQUEST,
-                        ZonedDateTime.now(ZoneId.of("Z")));
+                        LocalDateTime.now());
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }

@@ -1,8 +1,10 @@
 package com.example.products.serviceimplementation;
 
+import com.example.products.dto.requestDto.CategoryDto;
+import com.example.products.dto.requestDto.CompanyDto;
 import com.example.products.dto.responseDto.CompanyResponseDto;
 import com.example.products.entity.Company;
-import com.example.products.exception.CompanyNotFoundException;
+import com.example.products.exception.CompanyException;
 import com.example.products.repository.CompanyRepository;
 import com.example.products.service.CompanyService;
 import org.springframework.stereotype.Service;
@@ -24,9 +26,13 @@ public class CompanyServiceImplementation implements CompanyService {
 
 
     //ADD NEW COMPANY
-    public CompanyResponseDto addCompany(Company company) {
-        companyRepository.save(company);
-        return convertCompanyToDto(company);
+    public CompanyResponseDto addCompany(CompanyDto companyDto) {
+       Company company = new Company();
+       company.setName(companyDto.getName());
+       company.setDescription(companyDto.getDescription());
+
+       companyRepository.save(company);
+       return convertCompanyToDto(company);
     }
 
     //GET ALL COMPANIES
@@ -46,20 +52,19 @@ public class CompanyServiceImplementation implements CompanyService {
         if (company.isPresent()) {
             return convertCompanyToDto(company.get());
         } else
-            throw new CompanyNotFoundException("Company with id " + id + " not found");
+            throw new CompanyException("Company with id " + id + " not found");
     }
 
 
     //UPDATE COMPANY
     public CompanyResponseDto updateCompany(long id, Company company) {
-        Company company1 = companyRepository.findById(id).orElseThrow(() -> new CompanyNotFoundException("Company " +
-                "with id "+ id + " not found"));
+        Company company1 = companyRepository.findById(id).orElseThrow(() -> new CompanyException("Company " +
+                "with id " + id + " not found"));
 
 
         company1.setId(id);
         company1.setDescription(company.getDescription());
         company1.setName(company.getName());
-        company1.setProducts(company.getProducts());
 
         companyRepository.save(company1);
         return convertCompanyToDto(company1);

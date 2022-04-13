@@ -1,32 +1,43 @@
 package com.example.products.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Setter
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private double price;
+    private double productPrice;
 
-    private long quantity;
+    private double totalPrice;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    private String productName;
+
+    private long productQuantity;
+
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "cart_id")
+    @ManyToOne
     @JsonIgnore
     private Cart cart;
+
+    public CartItem(double productPrice, double totalPrice, String productName, long productQuantity, Product product) {
+        this.productPrice = productPrice;
+        this.totalPrice = totalPrice;
+        this.productName = productName;
+        this.productQuantity = productQuantity;
+        this.product = product;
+
+    }
 }

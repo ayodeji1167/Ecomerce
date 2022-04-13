@@ -1,26 +1,36 @@
 package com.example.products.controller;
 
-import com.example.products.dto.requestDto.CartDto;
 import com.example.products.dto.responseDto.CartResponseDto;
-import com.example.products.entity.Cart;
-import com.example.products.serviceimplementation.CartServiceImplementation;
-import com.example.products.serviceimplementation.ProductServiceImplementation;
+import com.example.products.service.CartService;
+import com.example.products.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/cart")
 public class CartController {
-    private final CartServiceImplementation cartServiceImplementation;
+    private final CartService cartService;
+    private final UserService userService;
 
-    public CartController(ProductServiceImplementation productServiceImplementation, CartServiceImplementation cartServiceImplementation) {
-
-        this.cartServiceImplementation = cartServiceImplementation;
+    public CartController(CartService cartService, UserService userService) {
+        this.cartService = cartService;
+        this.userService = userService;
     }
 
-    @GetMapping("/getCart/{id}")
-    public ResponseEntity<Cart> getCartItems(@PathVariable long id) {
-        return new ResponseEntity<>(cartServiceImplementation.getCartById(id) , HttpStatus.OK);
+
+    @GetMapping("/{cartId}")
+    public ResponseEntity<CartResponseDto> getCartItems(@PathVariable long cartId) {
+        return new ResponseEntity<>(cartService.getCartById(cartId), HttpStatus.OK);
     }
+
+    @DeleteMapping("/checkout/{userId}")
+    public ResponseEntity<?> checkoutCart(@PathVariable long userId) {
+        cartService.checkOut(userId);
+        String username = userService.findUserById(userId).getFirstName();
+        String message = "Hello " + username + " your order has been placed and is on its way " + " thanks for shopping";
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 
 }

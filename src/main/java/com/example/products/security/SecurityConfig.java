@@ -29,8 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
        http.cors();
        http.csrf().disable();
-       http.authorizeRequests().antMatchers("/add/user/**" ,"/add/admin/**").permitAll().anyRequest().authenticated();
-       http.httpBasic();
+       http.authorizeRequests().anyRequest().permitAll();
     }
 
     @Bean

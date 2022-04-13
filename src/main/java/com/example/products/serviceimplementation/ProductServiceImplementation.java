@@ -1,13 +1,13 @@
 package com.example.products.serviceimplementation;
 
-import com.example.products.dto.requestDto.ProductDto;
+import com.example.products.dto.requestDto.ProductRequest;
 import com.example.products.dto.responseDto.ProductResponseDto;
 import com.example.products.entity.Category;
 import com.example.products.entity.Company;
 import com.example.products.entity.Product;
-import com.example.products.exception.CategoryNotFoundException;
-import com.example.products.exception.CompanyNotFoundException;
-import com.example.products.exception.ProductNotFoundException;
+import com.example.products.exception.CategoryException;
+import com.example.products.exception.CompanyException;
+import com.example.products.exception.ProductException;
 import com.example.products.repository.CategoryRepository;
 import com.example.products.repository.CompanyRepository;
 import com.example.products.repository.ProductRepository;
@@ -36,12 +36,17 @@ public class ProductServiceImplementation implements ProductService {
 
 
     //ADD NEW PRODUCT
-    public ProductResponseDto addProduct(ProductDto productCompanyDto) {
+    public ProductResponseDto addProduct(ProductRequest productRequest) {
+        Product product = new Product();
+        product.setName(productRequest.getName());
+        product.setCategory(categoryRepository.findById(productRequest.getCategoryId()).get());
+        product.setCompany(companyRepository.findById(productRequest.getCompanyId()).get());
+        product.setPrice(productRequest.getPrice());
 
-        Product product = productRepository.save(converterToEntity(productCompanyDto));
+
+        productRepository.save(product);
 
         return convertToDto(product);
-
     }
 
     //GET ALL PRODUCTS
@@ -56,18 +61,18 @@ public class ProductServiceImplementation implements ProductService {
 
     //GET PRODUCT BY ID
     public ProductResponseDto getProductById(long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " Is Not Found"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductException("Product with id " + id + " Is Not Found"));
 
         return convertToDto(product);
     }
 
     //UPDATE PRODUCT
-    public ProductResponseDto updateProduct(long id, ProductDto productDto) {
+    public ProductResponseDto updateProduct(long id, ProductRequest productRequest) {
 
-        productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id "
+        productRepository.findById(id).orElseThrow(() -> new ProductException("Product with id "
                 + id + " Is Not Found"));
 
-        Product product2 = converterToEntity(productDto);
+        Product product2 = converterToEntity(productRequest);
         product2.setId(id);
         productRepository.save(product2);
 
@@ -90,27 +95,27 @@ public class ProductServiceImplementation implements ProductService {
     //Get product by name
     public Optional<Product> getProductByName(String name) {
         Optional<Product> product = productRepository.getProductByName(name);
-        product.orElseThrow(() -> new ProductNotFoundException("Product with name " + name + " Is Not Found"));
+        product.orElseThrow(() -> new ProductException("Product with name " + name + " Is Not Found"));
         return product;
 
     }
 
 
     //CONVERT DTO TO ENNTITY
-    private Product converterToEntity(ProductDto productDto) {
+    private Product converterToEntity(ProductRequest productRequest) {
         Product product1 = new Product();
 
         //Checking if the Company / Category passed to the Dto is present , if it is present, then add the normal company
-        Company company = companyRepository.findById(productDto.getCompanyId()).orElseThrow(() -> new CompanyNotFoundException(
-                "Company with Id " + productDto.getCompanyId() + " not found"));
+        Company company = companyRepository.findById(productRequest.getCompanyId()).orElseThrow(() -> new CompanyException(
+                "Company with Id " + productRequest.getCompanyId() + " not found"));
 
-        Category category = categoryRepository.findById(productDto.getCategoryId()).orElseThrow(() -> new CategoryNotFoundException(
-                "Category with Id " + productDto.getCategoryId() + " not found"));
+        Category category = categoryRepository.findById(productRequest.getCategoryId()).orElseThrow(() -> new CategoryException(
+                "Category with Id " + productRequest.getCategoryId() + " not found"));
 
 
         product1.setCompany(company);
-        product1.setPrice(productDto.getPrice());
-        product1.setName(productDto.getName());
+        product1.setPrice(productRequest.getPrice());
+        product1.setName(productRequest.getName());
         product1.setCategory(category);
 
 
@@ -130,7 +135,6 @@ public class ProductServiceImplementation implements ProductService {
         return productResponseDto;
 
     }
-
 
 
     //Delete Product

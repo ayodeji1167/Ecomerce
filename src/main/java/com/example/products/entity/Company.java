@@ -21,12 +21,14 @@ public class Company {
     @Column(unique = true)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
 
-    @OneToMany(mappedBy = "company" , fetch = FetchType.LAZY)
-    private Set<Product> products;
 
+    public Company(String name, String description) {
+        this.name = name;
+        this.description = description;
 
-
+    }
 }
