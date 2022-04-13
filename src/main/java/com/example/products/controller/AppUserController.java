@@ -6,25 +6,19 @@ import com.example.products.entity.AppUser;
 import com.example.products.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@PreAuthorize("hasAnyRole({'ADMIN', 'USER'})")
 @RestController
 @RequestMapping("/user")
-public class UserController {
-
+public class AppUserController {
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public AppUserController(UserService userService) {
         this.userService = userService;
     }
 
-    //CREATE A NORMAL USER
-    @PostMapping("/add")
-    public ResponseEntity<?> addNewUser(@RequestBody AppUserDto appUserDto) {
-        AppUser appUser = userService.createUser(appUserDto);
-        return new ResponseEntity<>(appUser, HttpStatus.OK);
-
-    }
 
     //SET SHIPPING ADDRESS
     @PostMapping("/address/{userId}")
@@ -34,16 +28,10 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    //CREATE AN ADMIN
-    @PostMapping("/add/admin")
-    public ResponseEntity<?> createAdmin(@RequestBody AppUserDto appUserDto) {
-        AppUser appUser = userService.createAdmin(appUserDto);
-        return new ResponseEntity<>(appUser, HttpStatus.OK);
-
-    }
-
 
     //GET USER BY ID
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<AppUser> getUserById(@PathVariable int id) {
         AppUser user = userService.findUserById(id);
@@ -52,7 +40,8 @@ public class UserController {
     }
 
 
-    //UPDATE A USER
+    //UPDATE USER
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<AppUser> updateUser(@RequestBody AppUserDto appUserDto, @PathVariable long id) {
         AppUser appUser = userService.updateUser(id, appUserDto);
