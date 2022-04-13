@@ -1,5 +1,6 @@
 package com.example.products.controller;
 
+import com.example.products.dto.requestDto.CompanyDto;
 import com.example.products.dto.responseDto.CompanyResponseDto;
 import com.example.products.entity.Company;
 import com.example.products.service.CompanyService;
@@ -22,7 +23,7 @@ public class CompanyController {
 
     //ADD NEW COMPANY
     @PostMapping("/add")
-    public ResponseEntity<CompanyResponseDto> addNewCompany(@RequestBody Company company) {
+    public ResponseEntity<CompanyResponseDto> addNewCompany(@RequestBody CompanyDto company) {
         CompanyResponseDto company1 = companyService.addCompany(company);
         return new ResponseEntity<>(company1, HttpStatus.OK);
     }

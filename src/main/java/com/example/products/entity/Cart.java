@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Set;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -23,18 +21,15 @@ public class Cart {
 
     private int itemsNumber;
 
-    @JsonIgnore
     @OneToMany( fetch = FetchType.LAZY ,mappedBy = "cart")
+    @JsonIgnore
     private Set<CartItem> cartItems;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id" , unique = true)
+    @JsonIgnore
     private AppUser appUser;
 
-    public Cart(double totalPrice, int itemsNumber, Set<CartItem> cartItems, AppUser appUser) {
-        this.totalPrice = totalPrice;
-        this.itemsNumber = itemsNumber;
-        this.cartItems = cartItems;
-        this.appUser = appUser;
-    }
+
+
 }

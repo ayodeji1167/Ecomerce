@@ -2,19 +2,18 @@ package com.example.products.exception;
 
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 
 public class ErrorDetails {
     private final String message;
     private final HttpStatus httpStatus;
-    private final ZonedDateTime zonedDateTime;
+    private final LocalDateTime localDateTime;
 
-    public ErrorDetails(String message, HttpStatus httpStatus, ZonedDateTime zonedDateTime) {
+    public ErrorDetails(String message, HttpStatus httpStatus, LocalDateTime localDateTime) {
         this.message = message;
         this.httpStatus = httpStatus;
-        this.zonedDateTime = zonedDateTime;
+        this.localDateTime = localDateTime;
     }
 
     public String getMessage() {
@@ -25,7 +24,7 @@ public class ErrorDetails {
         return httpStatus;
     }
 
-    public ZonedDateTime getZonedDateTime() {
-        return zonedDateTime;
+    public LocalDateTime getZonedDateTime() {
+        return localDateTime;
     }
 }

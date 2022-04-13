@@ -1,5 +1,6 @@
 package com.example.products.controller;
 
+import com.example.products.dto.requestDto.CategoryDto;
 import com.example.products.dto.responseDto.CategoryResponseDto;
 import com.example.products.entity.Category;
 import com.example.products.service.CategoryService;
@@ -23,7 +24,7 @@ public class CategoryController {
 
     //CREATE NEW CATEGORY
     @PostMapping("/add")
-    public ResponseEntity<CategoryResponseDto> createCategory(@RequestBody Category category) {
+    public ResponseEntity<CategoryResponseDto> createCategory(@RequestBody CategoryDto category) {
         CategoryResponseDto categoryResponseDto = categoryService.createCategory(category);
         return new ResponseEntity<>(categoryResponseDto, HttpStatus.OK);
 

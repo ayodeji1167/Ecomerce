@@ -1,14 +1,12 @@
 package com.example.products.controller;
 
+import com.example.products.dto.requestDto.AppUserDto;
 import com.example.products.dto.requestDto.ShippingAddressDto;
-import com.example.products.dto.requestDto.UserDto;
 import com.example.products.entity.AppUser;
 import com.example.products.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -22,8 +20,8 @@ public class UserController {
 
     //CREATE A NORMAL USER
     @PostMapping("/add")
-    public ResponseEntity<?> addNewUser(@RequestBody UserDto userDto) {
-        AppUser appUser = userService.createUser(userDto);
+    public ResponseEntity<?> addNewUser(@RequestBody AppUserDto appUserDto) {
+        AppUser appUser = userService.createUser(appUserDto);
         return new ResponseEntity<>(appUser, HttpStatus.OK);
 
     }
@@ -38,8 +36,8 @@ public class UserController {
 
     //CREATE AN ADMIN
     @PostMapping("/add/admin")
-    public ResponseEntity<?> createAdmin(@RequestBody UserDto userDto) {
-        AppUser appUser = userService.createAdmin(userDto);
+    public ResponseEntity<?> createAdmin(@RequestBody AppUserDto appUserDto) {
+        AppUser appUser = userService.createAdmin(appUserDto);
         return new ResponseEntity<>(appUser, HttpStatus.OK);
 
     }
@@ -56,8 +54,8 @@ public class UserController {
 
     //UPDATE A USER
     @PutMapping("/{id}")
-    public ResponseEntity<AppUser> updateUser(@RequestBody UserDto userDto, @PathVariable long id) {
-        AppUser appUser = userService.updateUser(id, userDto);
+    public ResponseEntity<AppUser> updateUser(@RequestBody AppUserDto appUserDto, @PathVariable long id) {
+        AppUser appUser = userService.updateUser(id, appUserDto);
         return new ResponseEntity<>(appUser, HttpStatus.OK);
 
     }

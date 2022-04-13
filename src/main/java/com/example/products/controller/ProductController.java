@@ -1,7 +1,7 @@
 package com.example.products.controller;
 
 
-import com.example.products.dto.requestDto.ProductDto;
+import com.example.products.dto.requestDto.ProductRequest;
 import com.example.products.dto.responseDto.ProductResponseDto;
 import com.example.products.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -23,10 +23,8 @@ public class ProductController {
 
     //ADD NEW PRODUCT
     @PostMapping("/add")
-    public ResponseEntity<ProductResponseDto> addNewProduct(@RequestBody ProductDto productDto) {
-
-
-        ProductResponseDto product = productService.addProduct(productDto);
+    public ResponseEntity<ProductResponseDto> addNewProduct(@RequestBody ProductRequest productRequest) {
+        ProductResponseDto product = productService.addProduct(productRequest);
 
 
         return new ResponseEntity<>(product, HttpStatus.OK);
@@ -50,7 +48,7 @@ public class ProductController {
 
     //UPDATE PRODUCT
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable int id, @RequestBody ProductDto productCompanyDto) {
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable int id, @RequestBody ProductRequest productCompanyDto) {
         ProductResponseDto p = productService.updateProduct(id, productCompanyDto);
 
         return new ResponseEntity<>(p, HttpStatus.OK);

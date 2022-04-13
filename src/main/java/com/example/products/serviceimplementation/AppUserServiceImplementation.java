@@ -1,12 +1,12 @@
 package com.example.products.serviceimplementation;
 
+import com.example.products.dto.requestDto.AppUserDto;
 import com.example.products.dto.requestDto.ShippingAddressDto;
-import com.example.products.dto.requestDto.UserDto;
 import com.example.products.entity.AppUser;
 import com.example.products.entity.Cart;
 import com.example.products.entity.Role;
 import com.example.products.entity.ShippingAddress;
-import com.example.products.exception.UserNotFoundException;
+import com.example.products.exception.AppUserException;
 import com.example.products.repository.UserRepo;
 import com.example.products.service.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,11 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImplementation implements UserService {
+public class AppUserServiceImplementation implements UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImplementation(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+    public AppUserServiceImplementation(UserRepo userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
     }
@@ -26,31 +26,29 @@ public class UserServiceImplementation implements UserService {
 
     //CREATE A USER
     @Override
-    public AppUser createUser(UserDto userDto) {
-        AppUser appUser = createNeutralUser(userDto);
+    public AppUser createUser(AppUserDto appUserDto) {
+        AppUser appUser = createNeutralUser(appUserDto);
         appUser.setRole(Role.USER);
         return userRepo.save(appUser);
     }
 
     //CREATE AN ADMIN
-    public AppUser createAdmin(UserDto userDto) {
-        AppUser admin = createNeutralUser(userDto);
+    public AppUser createAdmin(AppUserDto appUserDto) {
+        AppUser admin = createNeutralUser(appUserDto);
         admin.setRole(Role.ADMIN);
 
         return userRepo.save(admin);
     }
 
 
-
     //METHOD FOR CREATING A NEUTRAL USER
-    public AppUser createNeutralUser(UserDto userDto) {
+    public AppUser createNeutralUser(AppUserDto appUserDto) {
         AppUser appUser = new AppUser();
         Cart cart = new Cart();
-        appUser.setUsername(userDto.getUsername());
-        appUser.setFirstName(userDto.getFirstName());
-        appUser.setLastName(userDto.getLastName());
-        appUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        appUser.setEmail(userDto.getEmail());
+        appUser.setUsername(appUserDto.getUsername());
+        appUser.setFirstName(appUserDto.getFirstName());
+        appUser.setLastName(appUserDto.getLastName());
+        appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
         appUser.setEnabled(true);
         appUser.setCart(cart);
         cart.setAppUser(appUser);
@@ -63,15 +61,14 @@ public class UserServiceImplementation implements UserService {
     }
 
     //UPDATE USER
-    public AppUser updateUser(long id, UserDto userDto) {
+    public AppUser updateUser(long id, AppUserDto appUserDto) {
         AppUser appUser1 = userRepo.findById(id).orElseThrow(() -> new UsernameNotFoundException("AppUser with id " + id + " not found"));
         appUser1.setId(id);
-        appUser1.setUsername(userDto.getUsername());
-        appUser1.setFirstName(userDto.getFirstName());
-        appUser1.setLastName(userDto.getLastName());
-        appUser1.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        appUser1.setUsername(appUserDto.getUsername());
+        appUser1.setFirstName(appUserDto.getFirstName());
+        appUser1.setLastName(appUserDto.getLastName());
+        appUser1.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
         appUser1.setEnabled(true);
-        appUser1.setEmail(userDto.getEmail());
         appUser1.setRole(Role.USER);
 
         return userRepo.save(appUser1);
@@ -80,12 +77,12 @@ public class UserServiceImplementation implements UserService {
 
     //GET USER BY ID
     public AppUser findUserById(long id) {
-        return userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("User with Id "+ id +" not found"));
+        return userRepo.findById(id).orElseThrow(() -> new AppUserException("User with Id "+ id +" not found"));
     }
 
     //SET SHIPPING ADDRESS
     public AppUser setShippingAddress(ShippingAddressDto shippingAddressDto, long userId){
-        AppUser user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id " +userId + " not found"));
+        AppUser user = userRepo.findById(userId).orElseThrow(() -> new AppUserException("User with id " +userId + " not found"));
         ShippingAddress shippingAddress = convertShippingAdDto(shippingAddressDto);
         user.setShippingAddress(shippingAddress);
 

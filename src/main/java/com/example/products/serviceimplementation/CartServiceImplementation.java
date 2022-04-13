@@ -2,7 +2,7 @@ package com.example.products.serviceimplementation;
 
 import com.example.products.dto.responseDto.CartResponseDto;
 import com.example.products.entity.*;
-import com.example.products.exception.UserNotFoundException;
+import com.example.products.exception.AppUserException;
 import com.example.products.repository.CartItemRepo;
 import com.example.products.repository.CartRepository;
 import com.example.products.repository.OrderedProductsRepository;
@@ -62,7 +62,7 @@ public class CartServiceImplementation implements CartService {
 
     @Transactional
     public void checkOut(long cartId) {
-        Cart cart = cartRepo.findById(cartId).orElseThrow(() -> new UserNotFoundException(" Cart with Id " + cartId + " not found"));
+        Cart cart = cartRepo.findById(cartId).orElseThrow(() -> new AppUserException(" Cart with Id " + cartId + " not found"));
 
 
         AppUser appUser = userRepo.findAppUserByCartId(cartId);
@@ -73,7 +73,9 @@ public class CartServiceImplementation implements CartService {
 
         //saveOrderedProducts(cart, appUser);
 
-        cartItemRepo.deleteCartItemsByCartId(cart.getId());
+        Set<CartItem> cartItems = cart.getCartItems();
+        cartItemRepo.deleteAll(cartItems);
+
 
         cart.setItemsNumber(0);
         cart.setTotalPrice(0);
