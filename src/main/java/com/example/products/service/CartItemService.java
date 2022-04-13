@@ -3,13 +3,11 @@ package com.example.products.service;
 import com.example.products.entity.CartItem;
 
 public interface CartItemService {
-    public void remove(long itemId , long cartId);
+    void remove(long itemId, long cartId);
 
-    public void deleteItem(long itemId);
+     void addToCart(long productId , long userId);
 
-    public CartItem addToCart(long productId , long userId);
-
-    public CartItem getCartItemById(long itemId);
+     CartItem getCartItemById(long itemId);
 
 
 

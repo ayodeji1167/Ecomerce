@@ -4,7 +4,6 @@ import com.example.products.entity.*;
 import com.example.products.repository.CartItemRepo;
 import com.example.products.repository.CartRepository;
 import com.example.products.repository.ProductRepository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +32,7 @@ class CartItemServiceImplementationTest {
 
     @Autowired
     CartItemServiceImplementation cartItemServiceImpl;
+
 
     @Test
     @DisplayName("Test that if a product is added twice, rather than repeating it, its quantity is set to two and the Item in the cart is still 1")
@@ -103,34 +103,4 @@ class CartItemServiceImplementationTest {
 
     }
 
-    @Test
-    @Disabled
-    @DisplayName("Test that if an item quantity is 1, the item will be deleted")
-    void deleteItem() {
-        CartItem cartItem = new CartItem();
-        cartItem.setId(1L);
-        cartItem.setProductQuantity(1);
-        cartItem.setProductPrice(111);
-        cartItem.setCart(new Cart());
-        cartItem.setProductName("mango3");
-        cartItem.setTotalPrice(100);
-        cartItem.setProduct(new Product());
-
-
-        Cart cart = new Cart();
-        cart.setId(1L);
-        cart.setCartItems(Set.of(cartItem));
-
-
-        Mockito.when(cartRepo.findById(1L)).thenReturn(Optional.of(cart));
-        Mockito.when(cartItemRepo.findById(1L)).thenReturn(Optional.of(cartItem));
-
-        cartItemServiceImpl.remove(1L, 1L);
-
-
-        System.out.println(cartItem);
-
-        assertEquals(0, cartItem.getProductQuantity());
-
-    }
 }

@@ -1,8 +1,13 @@
 package com.example.products.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Setter
@@ -16,18 +21,19 @@ public class AppUser {
     @Column(nullable = false)
     private Long id;
 
+    @Length(min = 3, max = 25)
     @Column(unique = true)
+    @NotEmpty(message = "Username must not be empty")
     private String username;
 
+    @NotEmpty(message = "Enter Password!!")
     private String password;
 
+    @NotEmpty(message = "Enter First Name")
     private String firstName;
 
+    @NotEmpty(message = "Enter Last Name")
     private String lastName;
-
-    @Column(unique = true)
-    private String email;
-
 
     @Enumerated(EnumType.STRING)
     private Role role;

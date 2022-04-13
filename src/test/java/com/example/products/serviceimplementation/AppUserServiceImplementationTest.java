@@ -1,42 +1,38 @@
 package com.example.products.serviceimplementation;
 
-import com.example.products.dto.requestDto.UserDto;
+import com.example.products.dto.requestDto.AppUserDto;
 import com.example.products.entity.AppUser;
 import com.example.products.entity.Role;
-import com.example.products.repository.UserRepo;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class UserServiceImplementationTest {
+class AppUserServiceImplementationTest {
 
 
 
     @Autowired
-    UserServiceImplementation userServiceImplementation;
+    AppUserServiceImplementation appUserServiceImplementation;
 
     @Test
     @DisplayName("Test that this  method creates user with role USER")
     void createUser() {
-        UserDto userDto = new UserDto();
-        userDto.setUsername("Ayodeji");
-        userDto.setEmail("ayo@gmail.com");
-        userDto.setPassword("pass");
+        AppUserDto appUserDto = new AppUserDto();
+        appUserDto.setUsername("Ayodeji");
+        appUserDto.setEmail("ayo@gmail.com");
+        appUserDto.setPassword("pass");
+        appUserDto.setFirstName("ayomide");
+        appUserDto.setLastName("lala");
 
-        AppUser user = userServiceImplementation.createUser(userDto);
+        AppUser user = appUserServiceImplementation.createUser(appUserDto);
 
         assertEquals(user.getRole(), Role.USER);
 
@@ -47,12 +43,15 @@ class UserServiceImplementationTest {
     @DisplayName("Test that this  method creates user with role ADMIN")
     void createAdmin() {
 
-        UserDto userDto = new UserDto();
-        userDto.setUsername("Ayodej1i");
-        userDto.setEmail("ayo@gmaiil.com");
-        userDto.setPassword("pass2");
+        AppUserDto appUserDto = new AppUserDto();
+        appUserDto.setUsername("Ayodej1i");
+        appUserDto.setEmail("ayo@gmaiil.com");
+        appUserDto.setPassword("pass2");
+        appUserDto.setFirstName("ayomide");
+        appUserDto.setLastName("lala");
 
-        AppUser user = userServiceImplementation.createAdmin(userDto);
+
+        AppUser user = appUserServiceImplementation.createAdmin(appUserDto);
         assertEquals(user.getRole(), Role.ADMIN);
 
     }

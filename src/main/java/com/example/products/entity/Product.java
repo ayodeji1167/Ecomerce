@@ -27,7 +27,7 @@ public class Product {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @Column(unique = true)
+    @Column(unique = true , nullable = false)
     private String name;
 
     private double price;

@@ -1,20 +1,12 @@
 package com.example.products.dto.requestDto;
 
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-public class ProductDto {
-
-
+@Data
+public class ProductRequest {
     private Long companyId;
     private String name;
     private double price;
     private Long categoryId;
-
-
 }

@@ -21,6 +21,7 @@ public class Company {
     @Column(unique = true)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
 

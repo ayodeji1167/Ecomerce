@@ -10,7 +10,6 @@ import com.example.products.repository.UserRepo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,32 +65,25 @@ class CartServiceImplementationTest {
     }
 
     @Test
-    @DisplayName("Test That when user checks out, all items are being cleared")
-    void checkOut() {
-
+    void checkOut(){
         //GIVEN
         Set<CartItem> cartItems = new HashSet<>();
-        cartItems.add(new CartItem(100, 500, "Mango" ,5 ,new Product()));
+        cartItems.add(new CartItem(100, 500, "Mango" ,5,new Product()));
         cartItems.add(new CartItem(50, 100, "Mango" ,2,new Product()));
         cartItems.add(new CartItem(200, 2000, "Mango" ,10,new Product()));
 
-        AppUser user = new AppUser();
-        user.setId(1L);
-
         Cart cart = new Cart();
         cart.setId(1L);
-        cart.setAppUser(user);
+        cart.setAppUser(new AppUser());
         cart.setCartItems(cartItems);
 
         Mockito.when(cartRepo.findById(1L)).thenReturn(Optional.of(cart));
-        Mockito.when(userRepo.findAppUserByCartId(1L)).thenReturn(user);
 
+        cartServiceImpl.checkOut(1L);
 
-        //WHEN
-        cartServiceImpl.checkOut(1);
-
-
-        //THEN
         assertEquals(0, cart.getItemsNumber());
+        assertEquals(0,cart.getTotalPrice());
+
     }
+
 }

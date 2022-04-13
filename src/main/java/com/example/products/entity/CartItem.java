@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 @Entity
 @Setter
-@ToString
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,9 +28,7 @@ public class CartItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-
     @ManyToOne
-    @JoinColumn(name = "cart_id")
     @JsonIgnore
     private Cart cart;
 
