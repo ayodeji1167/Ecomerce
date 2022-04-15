@@ -50,9 +50,9 @@ modules
 
 ### Tools and Technologies:
 
-* **Technology** : Bootstrap, Java, Spring MVC, Hibernate, JSP, Maven.
+* **Technology** :  Java, Spring - Boot.
 * **Application Servicer**: Apache Tomcat Server.
-* **Database** : H2 Database (In memory database)
+* **Database** : My Sql
 Contributors are most welcome.
 
      
