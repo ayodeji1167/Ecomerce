@@ -53,7 +53,7 @@ modules
 * **Technology** :  Java, Spring - Boot.
 * **Application Servicer**: Apache Tomcat Server.
 * **Database** : My Sql
-Contributors are most welcome.
+* Contributors are most welcome.
 
      
 
